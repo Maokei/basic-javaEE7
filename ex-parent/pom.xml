@@ -1,0 +1,118 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.sample</groupId>
+	<artifactId>ex-parent</artifactId>
+	<version>1.0</version>
+	<packaging>pom</packaging>
+	<description>Java EE multi module project</description>
+
+	<properties>
+		<!-- encoding -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<!--java version -->
+		<java-version>1.8</java-version>
+
+		<!-- plugin versions -->
+		<ejb-plugin-version>2.3</ejb-plugin-version>
+		<war-plugin-version>2.4</war-plugin-version>
+		<ear-plugin-version>2.9</ear-plugin-version>
+		<compiler-plugin-version>3.1</compiler-plugin-version>
+
+		<!-- dependency versions -->
+		<javaee-api-version>7.0</javaee-api-version>
+
+		<!-- EJB spec version -->
+		<ejb-spec-version>3.2</ejb-spec-version>
+		
+		<!-- junit -->
+		<junit-version>4.12</junit-version>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>javax</groupId>
+				<artifactId>javaee-api</artifactId>
+				<version>${javaee-api-version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<!-- Test scope dependencies -->
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit-version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>1.9.5</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<!-- Plugin management -->
+	<build>
+		<pluginManagement>
+			<plugins>
+				<!-- compiler plugin -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>${compiler-plugin-version}</version>
+					<configuration>
+						<source>${java-version}</source>
+						<target>${java-version}</target>
+						<encoding>${project.build.sourceEncoding}</encoding>
+					</configuration>
+				</plugin>
+				<!-- ejb plugin -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-ejb-plugin</artifactId>
+					<version>${ejb-plugin-version}</version>
+					<configuration>
+						<ejbVersion>${ejb-spec-version}</ejbVersion>
+					</configuration>
+				</plugin>
+
+				<!-- war plugin -skinny wars mode! -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-war-plugin</artifactId>
+					<version>${war-plugin-version}</version>
+					<configuration>
+						<failOnMissingWebXml>false</failOnMissingWebXml>
+						<packagingExcludes>WEB-INF/lib/*.jar</packagingExcludes>
+						<archive>
+							<manifest>
+								<addClasspath>true</addClasspath>
+								<classpathPrefix>lib/</classpathPrefix>
+							</manifest>
+						</archive>
+						<webResources>
+							<resource>
+								<filtering>true</filtering>
+								<directory>src/main/webapp</directory>
+								<includes>
+									<include>**/web.xml</include>
+								</includes>
+							</resource>
+						</webResources>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+	<!-- Modules -->
+	<modules>
+		<module>ex-web</module>
+		<module>ex-ejb</module>
+		<module>ex-jpa</module>
+		<module>ex-ear</module>
+	</modules>
+</project>
