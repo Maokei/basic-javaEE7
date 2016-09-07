@@ -1,0 +1,20 @@
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+	<persistence-unit name="exPU" transaction-type="JTA">
+		<description>Manage project Entities</description>
+		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+		<jta-data-source>jdbc/resource</jta-data-source>
+		<properties>
+			<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
+			<property name="javax.persistence.jdbc.user" value="username" />
+			<property name="javax.persistence.jdbc.password" value="password" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/database" />
+
+			<!-- EclipseLink should create the database schema automatically -->
+  			<property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
+  			<property name="eclipselink.weaving" value="false"/>
+     		<property name="eclipselink.logging.level" value="FINEST"/>
+		</properties>
+	</persistence-unit>
+</persistence>
